@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%  load static %}
+
+{% block content %}
+    <p>Привет.</p>
+    <p>На этом сайте ты можешь узнать как менялась цена на косметику в интернетмагазине SKINFOOD</p>
+    <p><a href="{% url 'login' %}" >Войти</a></p>
+    <p><a href="{% url 'sign-up' %}" >Регистрация</a></p>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block links %}
+<link href="{% static 'css/login.css' %}" rel="stylesheet">
+{% endblock %}
+
+
+{% block menu %}{% endblock %}
+
+{% block content %}
+    <div class="container py-5" style="max-width: 400px;">
+      <form method="post">
+        {% csrf_token %}
+        <h1 class="text-center h3 mb-3 fw-normal">Please sign in</h1>
+
+        <div class="form-floating">
+          <input type="text" name="username" class="form-control" id="floatingInput" placeholder="User">
+          <label for="floatingInput">Username</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+
+      </form>
+    </div>
+
+{% endblock %}

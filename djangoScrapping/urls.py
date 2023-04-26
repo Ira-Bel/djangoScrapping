@@ -17,9 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from scrapping import views
+from user import views as user_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", views.Hello.as_view(), name="main"),
+    path("", views.Hello.as_view(), name="start"),
+    path("main/", views.MainPage.as_view(), name="main"),
     path("goods/<str:name>", views.GoodsPriceView.as_view(), name='goods_price'),
+
+    path("accounts/register", user_views.register, name="sign-up"),
+    path("accounts/", include("django.contrib.auth.urls")),
+
+    path('activate/<uid>/<token>/', user_views.activate, name='activate'),
 ]

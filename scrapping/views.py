@@ -6,13 +6,18 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from .models import Goods
-from .tasks import parse_page
+# from .tasks import parse_page
 from io import BytesIO
 
 
 class Hello(View):
     def get(self, request):
-        result = parse_page()
+        # result = parse_page()
+        return render(request, "start.html")
+
+
+class MainPage(View):
+    def get(self, request):
         return render(request, "main.html")
 
 
