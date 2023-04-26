@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%  load static %}
+
+{% block content %}
+    <h1>{{ request.GET.name }}</h1>
+     <img src="{{ image }}" alt="Price vs Date">
+    <p>The lowest price is {{ min_price }}</p>
+    <p>The current price is {{ current_price }}</p>
+{% endblock %}
