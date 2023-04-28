@@ -55,8 +55,9 @@ def parse_page():
                 "price": price
             }
             list_items.append(item)
+            print("count")
         print("end")
-        return save(list_items)
+    return save(list_items)
 
 
 @shared_task(serializer='json')
