@@ -4,7 +4,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
 from django.http import HttpResponse
-
+from django.contrib.auth import logout
 from .forms import UserRegistrationForm
 from django.contrib.auth.models import User
 
@@ -54,3 +54,8 @@ def activate(request, uid: str, token: str):
         return HttpResponse("<h1>Вы можете войти<h1>")
 
     return HttpResponse("<h1>Неверный токен!!!<h1>")
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('start')

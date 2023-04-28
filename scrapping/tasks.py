@@ -32,7 +32,7 @@ def random_headers():
 @shared_task
 def parse_page():
     list_items = []
-    for count in range(1, 2):  # change range(1, 89)
+    for count in range(1, 4):  # change range(1, 89)
         print("start")
         sleep(1)
         url = f"https://skinfood.by/catalog/litso/filter/strana-is-1d7e7a19-533c-11ea-80c0-00155d0a0360/apply/?PAGEN_4={count}"

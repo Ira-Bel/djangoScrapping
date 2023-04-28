@@ -1,5 +1,8 @@
 import base64
+
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils.decorators import method_decorator
 from django.views import View
 import matplotlib
 matplotlib.use('agg')
@@ -16,11 +19,14 @@ class Hello(View):
         return render(request, "start.html")
 
 
-class MainPage(View):
+class ShowAllGoods(View):
+
     def get(self, request):
-        return render(request, "main.html")
+        goods = Goods.objects.all().values("name", "description", "image_link").distinct()
+        return render(request, "main.html", {"goods": goods})
 
 
+@method_decorator(login_required(login_url="/"), name="dispatch")
 class GoodsPriceView(View):
 
     def get(self, request, name: str):

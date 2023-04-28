@@ -4,6 +4,17 @@
 {% block content %}
     <p>Привет.</p>
     <p>На этом сайте ты можешь узнать как менялась цена на косметику в интернетмагазине SKINFOOD</p>
-    <p><a href="{% url 'login' %}" >Войти</a></p>
-    <p><a href="{% url 'sign-up' %}" >Регистрация</a></p>
+    <p><a href="https://skinfood.by">SKINFOOD</a></p>
+    <img src="{% static "image/2.jpg" %}" alt="cosmetics">
+    <p><a href="{% url "main" %}">Товары</a></p>
+    <p>Чтобы увидеть график изменения цены, тебе необходимо зарегистрироваться или войти!</p>
+    <form method="get" action="{% url 'goods_price' name="name" %}">
+        {% csrf_token %}
+        <label for="name">Скоприуй и вставь название товара в это поле:</label>
+        <input type="text" id="name" name="name">
+        <input type="submit" value="Show">
+     </form>
+    <p><a href="{% url "login" %}" >Войти</a></p>
+    <p><a href="{% url "sign-up" %}" >Регистрация</a></p>
+    <a href="{% url 'logout' %}">Выйти</a>
 {% endblock %}
