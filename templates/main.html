@@ -2,14 +2,32 @@
 {%  load static %}
 
 {% block content %}
-      <h1>Товары</h1>
-  <ul>
+    <div class="container py-5">
+          <h1>Товары:</h1>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
     {% for good in goods %}
-      <li>
-        <h2>{{ good.name }}</h2>
-        <p>{{ good.description }}</p>
-        <img src="{{ good.image_link }}" alt="{{ good.name }}">
-      </li>
+         <div class="col-md-2">
+          <div class="card shadow">
+            <h3>{{ good.name }}</h3>
+            <p>{{ good.description }}</p>
+            <img src="{{ good.image_link }}" class="rounded">
+          </div>
+         </div>
     {% endfor %}
-  </ul>
+
+    </div>
+    </div>
+
+    <div>
+     <style>
+        .b1 {
+    background: gray;
+    color: white;
+    font-size: 14pt;
+   }
+    </style>
+        <a href="{% url 'start' %}" class="b1">На главную</a>
+    </div>
+
 {% endblock %}

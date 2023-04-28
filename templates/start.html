@@ -2,19 +2,35 @@
 {%  load static %}
 
 {% block content %}
-    <p>Привет.</p>
-    <p>На этом сайте ты можешь узнать как менялась цена на косметику в интернетмагазине SKINFOOD</p>
-    <p><a href="https://skinfood.by">SKINFOOD</a></p>
-    <img src="{% static "image/2.jpg" %}" alt="cosmetics">
-    <p><a href="{% url "main" %}">Товары</a></p>
-    <p>Чтобы увидеть график изменения цены, тебе необходимо зарегистрироваться или войти!</p>
+    <h4>
+    <p>Цены на косметику в интернет магазинах меняются очень часто.</p>
+    <p>Ты можешь выбрать интересующий тебя товар, который продается в магазине SKINFOOD,</p>
+    <p>и увидеть как изменялась цена, а также узнать какой была минимальная цена на этот продуктю</p>
+    </h4>
+    <h3>
+    <p>Жми сюда и переходи в магазин:<a href="https://skinfood.by" class="b1">SKINFOOD</a></p>
+    </h3>
+    <style>
+        .p{
+            font-size: 22px;
+            color: black;
+        }
+        .fig {
+            text-align: center;
+        }
+        .b1 {
+    background: gray;
+    color: white;
+    font-size: 14pt;
+   }
+    </style>
+    <p class="fig"><img width="30%" src="{% static "image/2.jpg" %}" alt="cosmetics"></p>
+    <p class="p">Также ты може просмотреть товары на нашем сайте: <a href="{% url "main" %} " class="b1">Товары</a></p>
+    <p class="p">Чтобы увидеть график изменения цены, тебе необходимо зарегистрироваться или войти!</p>
     <form method="get" action="{% url 'goods_price' name="name" %}">
         {% csrf_token %}
-        <label for="name">Скоприуй и вставь название товара в это поле:</label>
+        <label for="name" class="p">Скоприуй и вставь название товара в это поле:</label>
         <input type="text" id="name" name="name">
-        <input type="submit" value="Show">
+        <input type="submit" value="Показать" class="b1" >
      </form>
-    <p><a href="{% url "login" %}" >Войти</a></p>
-    <p><a href="{% url "sign-up" %}" >Регистрация</a></p>
-    <a href="{% url 'logout' %}">Выйти</a>
 {% endblock %}

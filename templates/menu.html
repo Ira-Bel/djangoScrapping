@@ -1,0 +1,29 @@
+<header>
+  <div class="collapse bg-secondary" id="navbarHeader">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-md-7 py-4">
+          <h4 class="text-white">Привет!</h4>
+          <p class="text-light">Сайт "The best price". <br>На этом сайте ты можешь узнать как менялась цена на косметику в интернетмагазине SKINFOOD</p>
+        </div>
+        <div class="col-sm-4 offset-md-1 py-4">
+          <h4 class="text-white">Навигация</h4>
+          <ul class="list-unstyled">
+            <li><a href="{% url "login" %}" class="text-white">Войти в аккаунт</a></li>
+            <li><a href="{% url "sign-up" %}" class="text-white">Зарегистрироваться</a></li>
+            <li><a href="{% url "logout" %}" class="text-white">Выйти из аккаунта</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="navbar navbar-dark bg-secondary shadow-sm">
+    <div class="container">
+<button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarHeader"
+              aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+  </div>
+</header>

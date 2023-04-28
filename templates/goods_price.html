@@ -2,8 +2,25 @@
 {%  load static %}
 
 {% block content %}
+    <div class="row"></div>
+        <div class="col-md-offset-6">
     <h1>{{ request.GET.name }}</h1>
-     <img src="{{ image }}" alt="Price vs Date">
+             <div>
+                 <img src="{{ image }}" alt="Price vs Date">
+                 <img width="30%" src="{{ photo }}" alt="Price vs Date" class="rounded">
+    </div>
     <p>The lowest price is {{ min_price }}</p>
     <p>The current price is {{ current_price }}</p>
+    </div>
+
+    <div>
+     <style>
+        .b1 {
+    background: gray;
+    color: white;
+    font-size: 14pt;
+   }
+    </style>
+        <a href="{% url 'start' %}" class="b1">На главную</a>
+    </div>
 {% endblock %}
