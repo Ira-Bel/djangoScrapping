@@ -199,6 +199,11 @@ CELERY_TASK_TRACK_STARTED = True
 # CELERY_TASK_SERIALIZER = 'json'
 # CELERY_RESULT_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
+CELERY_TASKS_ROUTES = {
+    "registration.tasks.send_confirmation_email": {
+        "queue": "email"
+    }
+}
 
 EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
