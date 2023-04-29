@@ -1,8 +1,6 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.core import serializers
-from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.template.loader import render_to_string
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import UserSerializer, UserRegistrationSerializer, \
@@ -10,7 +8,7 @@ from .serializers import UserSerializer, UserRegistrationSerializer, \
 from ..models import Goods
 from django.contrib.auth.models import User
 from rest_framework import generics, status
-
+from user.tasks import send_confirmation_email
 from django.shortcuts import get_object_or_404
 
 
@@ -31,22 +29,7 @@ class RegisterAPIView(generics.GenericAPIView):
         user = serializer.save()
         user.is_active = True
         user.save()
-
-        message = render_to_string(
-            "registration/email_confirm.html",
-            {
-                "domain": "127.0.0.1:8000",
-                "user": user,
-                "uid": user.id,
-                "token": default_token_generator.make_token(user)
-            },
-        )
-        send_mail(
-            subject="Подтвердите регистрацию",
-            from_email="NewUserIra@yandex.ru",
-            recipient_list=[user.email],
-            message=message
-        )
+        send_confirmation_email.delay(user.id)
         return Response(
             {
                 "detail": "Регистрация прошла успешно."

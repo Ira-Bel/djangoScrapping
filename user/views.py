@@ -1,5 +1,3 @@
-from django.core.mail import send_mail
-
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import render_to_string
@@ -7,6 +5,7 @@ from django.http import HttpResponse
 from django.contrib.auth import logout
 from .forms import UserRegistrationForm
 from django.contrib.auth.models import User
+from .tasks import send_confirmation_email
 
 
 def create_message(user) -> str:
@@ -31,12 +30,7 @@ def register(request):
             user.is_active = False
             user.save()
 
-            send_mail(
-                subject="Подтвердите регистрацию",
-                from_email="NewUserIra@yandex.ru",
-                recipient_list=[user.email],
-                message=create_message(user)
-            )
+            send_confirmation_email.delay(user.id)
 
             return redirect("main")
     else:
