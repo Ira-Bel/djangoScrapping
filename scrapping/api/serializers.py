@@ -25,14 +25,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-class MessageSerializer(serializers.ModelSerializer):
-    message = serializers.CharField()
-
-    class Meta:
-        model = User
-        fields = ['message']
-
-
 class GoodsShowSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -40,13 +32,12 @@ class GoodsShowSerializer(serializers.ModelSerializer):
         fields = ["name", "description", "image_link"]
 
 
-class GoodsSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=200)
-    date = serializers.DateField()
-    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+class GraphSerializer(serializers.Serializer):
+    dates = serializers.ListSerializer(required=True, child=serializers.DateTimeField())
+    prices = serializers.ListSerializer(required=True, child=serializers.DecimalField(max_digits=10, decimal_places=2))
 
 
 class GoodsPriceSerializer(serializers.Serializer):
-    image = serializers.CharField()
+    data = GraphSerializer()
     min_price = serializers.DecimalField(max_digits=10, decimal_places=2)
     current_price = serializers.DecimalField(max_digits=10, decimal_places=2)

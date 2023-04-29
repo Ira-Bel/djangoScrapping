@@ -21,6 +21,9 @@ from user import views as user_views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+
+    path("api/", include("scrapping.api.urls")),
+
     path("", views.Hello.as_view(), name="start"),
     path("main/", views.ShowAllGoods.as_view(), name="main"),
     path("goods/<str:name>", views.GoodsPriceView.as_view(), name='goods_price'),
