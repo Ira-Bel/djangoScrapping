@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 from datetime import timedelta
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%5@s2h&zm7&v7#5r#7!vjvf@r0n7g7h1u-m)l#p)!8kc2(&pct'
+SECRET_KEY = os.getenv("SECRETKEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -81,9 +85,9 @@ WSGI_APPLICATION = 'djangoScrapping.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': "parser",
-        "USER": "userIra",
-        "PASSWORD": "1111",
+        'NAME': os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
         "HOST": "127.0.0.1",
         "PORT": "5432"
     }
@@ -209,5 +213,5 @@ EMAIL_HOST = "smtp.yandex.ru"
 EMAIL_PORT = 465
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
-EMAIL_HOST_USER = "NewUserIra@yandex.ru"
-EMAIL_HOST_PASSWORD = "mqtivvgxsegeidos"
+EMAIL_HOST_USER = os.getenv("MAIL_BOX")
+EMAIL_HOST_PASSWORD = os.getenv("MAIL_PASSWORD")

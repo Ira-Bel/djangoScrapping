@@ -12,3 +12,4 @@ django-extensions==3.2.1
 plotly~=5.14.1
 psycopg2==2.9.6
 crispy-bootstrap5==0.7
+python-dotenv==1.0.0
