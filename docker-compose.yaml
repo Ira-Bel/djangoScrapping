@@ -16,8 +16,6 @@ services:
     volumes:
       - ../2. Init Database:/docker-entrypoint-initdb.d
       - .:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U userIra -d parser" ]
@@ -41,14 +39,26 @@ services:
     image: celery:4
     command: celery -A myproject worker -l info
     volumes:
-      - .:/app
+      - .:/my_app
     depends_on:
       - postgres_db
       - redis
 
+  web-server:
+    image: nginx:stable-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - "./nginx/default.conf:/etc/nginx/conf.d/default.conf"
+      - "./static:/var/www/static:ro"
+
+    depends_on:
+      - django-parser1
+      - django-parser2
+
   scrapping-init:
     build: .
-    image: parser:v0.1
+    image: parser:v0.4
     environment:
       DJANGO_SUPERUSER_EMAIL: djangoProjectUser@yandex.ru
       DJANGO_SUPERUSER_NAME: ira
@@ -59,8 +69,9 @@ services:
       postgres_db:
         condition: service_healthy
 
-  django-parser:
-    image: parser:v0.1
+  #BACKEND for parser1
+  django-parser1: &backend
+    image: parser:v0.4
     command: python manage.py runserver 0.0.0.0:8000
     restart: on-failure
 
@@ -68,11 +79,12 @@ services:
       DJANGO_DEBUG: 1
       DJANGO_SECRET_KEY: django-insecure-%5@s2h&zm7&v7#5r#7!vjvf@r0n7g7h1u-m)l#p)!8kc2(&pct
 
-    ports:
-      - "8080:8000"
-
-#    volumes:
-#      - ",/static:/app/static:ro"
-
     depends_on:
-      - postgres_db
+      - scrapping-init
+
+    volumes:
+      - "./media:/my_app/media"
+
+  #BACKEND for parser2
+  django-parser2:
+    <<: *backend
