@@ -7,13 +7,16 @@ services:
   postgres_db:
 
     image: postgres:15.2
+    env_file:
+      - .env
 
     environment:
-      POSTGRES_DB: "parser"
-      POSTGRES_USER: "userIra"
-      POSTGRES_PASSWORD: "1111"
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - ./pg_data:/var/lib/postgresql/data
+
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U userIra -d parser" ]
@@ -57,7 +60,7 @@ services:
 
   scrapping-init:
     build: .
-    image: parser:v0.2
+    image: parser:v0.1
     env_file:
       - .env
     environment:
@@ -72,14 +75,15 @@ services:
 
   #BACKEND for parser1
   django-parser1: &backend
-    image: parser:v0.2
+    image: parser:v0.1
     command: python manage.py runserver 0.0.0.0:8000
     restart: on-failure
+    env_file:
+      - .env
 
     environment:
-      DEBUG: 1
-      SECRET_KEY: django-insecure-!5@s2h&zm7&v7#5r#7!vjvf@r0n7g7h1u-m)l#p)!8kc2(&pct
-
+      DEBUG: ${DEBUG}
+      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - scrapping-init
 
