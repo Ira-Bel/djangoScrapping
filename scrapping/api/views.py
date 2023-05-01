@@ -40,7 +40,6 @@ class RegisterAPIView(generics.GenericAPIView):
 
 
 class ActivateAPIView(generics.GenericAPIView):
-    serializer_class = serializers.Serializer
 
     def get(self, request, uid: str, token: str):
         user = get_object_or_404(User, id=int(uid))

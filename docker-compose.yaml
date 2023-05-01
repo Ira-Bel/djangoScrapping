@@ -12,10 +12,8 @@ services:
       POSTGRES_DB: "parser"
       POSTGRES_USER: "userIra"
       POSTGRES_PASSWORD: "1111"
-      PGDATA: "/var/lib/postgresql/data/pgdata"
     volumes:
-      - ../2. Init Database:/docker-entrypoint-initdb.d
-      - .:/var/lib/postgresql/data
+      - ./pg_data:/var/lib/postgresql/data
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U userIra -d parser" ]
@@ -40,6 +38,7 @@ services:
     command: celery -A myproject worker -l info
     volumes:
       - .:/my_app
+
     depends_on:
       - postgres_db
       - redis
@@ -58,7 +57,9 @@ services:
 
   scrapping-init:
     build: .
-    image: parser:v0.4
+    image: parser:v0.2
+    env_file:
+      - .env
     environment:
       DJANGO_SUPERUSER_EMAIL: djangoProjectUser@yandex.ru
       DJANGO_SUPERUSER_NAME: ira
@@ -71,13 +72,13 @@ services:
 
   #BACKEND for parser1
   django-parser1: &backend
-    image: parser:v0.4
+    image: parser:v0.2
     command: python manage.py runserver 0.0.0.0:8000
     restart: on-failure
 
     environment:
-      DJANGO_DEBUG: 1
-      DJANGO_SECRET_KEY: django-insecure-%5@s2h&zm7&v7#5r#7!vjvf@r0n7g7h1u-m)l#p)!8kc2(&pct
+      DEBUG: 1
+      SECRET_KEY: django-insecure-!5@s2h&zm7&v7#5r#7!vjvf@r0n7g7h1u-m)l#p)!8kc2(&pct
 
     depends_on:
       - scrapping-init

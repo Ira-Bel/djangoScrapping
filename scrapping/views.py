@@ -37,6 +37,8 @@ class GoodsPriceView(View):
         prices = [good.price for good in goods]
         min_price = min(prices)
         current_price = prices[-1]
+        photos = [good.image_link for good in goods]
+        photo = photos[1]
 
         # Convert dates to numerical format
         dates_num = mdates.date2num(dates)
@@ -57,5 +59,10 @@ class GoodsPriceView(View):
         plt.close(fig)
         buffer.seek(0)
         image = base64.b64encode(buffer.getvalue()).decode('utf-8')
-        context = {'image': f'data:image/png;base64,{image}', 'current_price': current_price, 'min_price': min_price}
+        context = {
+            'image': f'data:image/png;base64,{image}',
+            'current_price': current_price,
+            'min_price': min_price,
+            "photo": photo
+        }
         return render(request, "goods_price.html",  context=context)
