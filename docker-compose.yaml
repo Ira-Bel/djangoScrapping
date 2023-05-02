@@ -11,9 +11,9 @@ services:
       - .env
 
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: DB_NAME
+      POSTGRES_USER: DB_USER
+      POSTGRES_PASSWORD: DB_PASSWORD
     volumes:
       - ./pg_data:/var/lib/postgresql/data
 
@@ -35,16 +35,6 @@ services:
   redis:
     image: redis:6.0
 
-  celery:
-    build: .
-    image: celery:4
-    command: celery -A myproject worker -l info
-    volumes:
-      - .:/my_app
-
-    depends_on:
-      - postgres_db
-      - redis
 
   web-server:
     image: nginx:stable-alpine
@@ -81,9 +71,6 @@ services:
     env_file:
       - .env
 
-    environment:
-      DEBUG: ${DEBUG}
-      SECRET_KEY: ${SECRET_KEY}
     depends_on:
       - scrapping-init
 
@@ -93,3 +80,9 @@ services:
   #BACKEND for parser2
   django-parser2:
     <<: *backend
+
+  celery:
+    <<: *backend
+    command: celery -A djangoScrapping worker -l info
+    depends_on:
+      - redis
