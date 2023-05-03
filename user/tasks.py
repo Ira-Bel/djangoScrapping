@@ -12,7 +12,7 @@ def send_confirmation_email(user_id):
     message = render_to_string(
         "registration/email_confirm.html",
         {
-            "domain": "127.0.0.1:8000",
+            "domain": settings.DOMAIN_NAME,
             "user": user,
             "uid": user.id,
             "token": default_token_generator.make_token(user)
