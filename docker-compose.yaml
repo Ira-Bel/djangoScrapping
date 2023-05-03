@@ -6,17 +6,14 @@ services:
 
   postgres_db:
 
-    image: postgres:15.2
-    env_file:
-      - .env
+    image: postgres
 
     environment:
-      POSTGRES_DB: DB_NAME
-      POSTGRES_USER: DB_USER
-      POSTGRES_PASSWORD: DB_PASSWORD
+      POSTGRES_DB: parser
+      POSTGRES_USER: userIra
+      POSTGRES_PASSWORD: 1111
     volumes:
       - ./pg_data:/var/lib/postgresql/data
-
 
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -U userIra -d parser" ]
@@ -24,13 +21,7 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    restart: unless-stopped
-    deploy:
-        resources:
-          limits:
-            cpus: '1'
-            memory: 4G
-
+    restart: on-failure
 
   redis:
     image: redis:6.0
@@ -50,22 +41,24 @@ services:
 
   scrapping-init:
     build: .
-    image: parser:v0.1
+    image: parser:v0.7
     env_file:
       - .env
     environment:
       DJANGO_SUPERUSER_EMAIL: djangoProjectUser@yandex.ru
-      DJANGO_SUPERUSER_NAME: ira
+      DJANGO_SUPERUSER_USERNAME: ira
       DJANGO_SUPERUSER_PASSWORD: 1111
 
-    command: python manage.py migrate && python manage.py createsuperuser --noinput
+    command: /bin/sh init-db.sh
+    volumes:
+      - "./init-db.sh:/my_app/init-db.sh:ro"
     depends_on:
       postgres_db:
         condition: service_healthy
 
   #BACKEND for parser1
   django-parser1: &backend
-    image: parser:v0.1
+    image: parser:v0.7
     command: python manage.py runserver 0.0.0.0:8000
     restart: on-failure
     env_file:
