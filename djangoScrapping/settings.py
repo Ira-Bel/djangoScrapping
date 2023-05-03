@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "1"
 
 ALLOWED_HOSTS = ["*"]
-
+DOMAIN_NAME = os.getenv("DOMAIN_NAME")
 
 # Application definition
 
