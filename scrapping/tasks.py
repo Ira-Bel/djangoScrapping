@@ -8,6 +8,7 @@ from celery import shared_task
 from .models import Goods
 
 
+# create user-agent for Get request
 desktop_agents = [
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36",
@@ -22,6 +23,7 @@ desktop_agents = [
 ]
 
 
+# create header for Get request
 def random_headers():
     return {
         "User-Agent": choice(desktop_agents),
@@ -32,21 +34,22 @@ def random_headers():
 @shared_task
 def parse_page():
     list_items = []
-    for count in range(1, 4):  # change range(1, 89)
+    for count in range(1, 26):
         print("start")
         sleep(1)
+        # save URL address
         url = f"https://skinfood.by/catalog/litso/filter/strana-is-1d7e7a19-533c-11ea-80c0-00155d0a0360/apply/?PAGEN_4={count}"
-        response = requests.get(url, headers=random_headers())
-        soup = BeautifulSoup(response.text, "lxml")
-        data = soup.find_all("div", class_="product")
+        response = requests.get(url, headers=random_headers())                         # get HTML page
+        soup = BeautifulSoup(response.text, "lxml")                                    #
+        data = soup.find_all("div", class_="product")                                  # get all blocks with items
         for item in data:
-            name = item.find("span", class_="product__title").text
+            name = item.find("span", class_="product__title").text                     # get all blocks with item names
             image_link = "https://skinfood.by" + item.find(
                 "img", class_="product__image"
-            ).get("src")
+            ).get("src")                                                              # get all blocks with image links
             description = item.find("span", class_="product__subtitle").text
             price = float(
-                item.find("span", class_="product__price").text.replace("BYN", "")
+                item.find("span", class_="product__price").text.replace("BYN", "")    # get all blocks with item prices
             )
             item = {
                 "name": name,
@@ -57,7 +60,7 @@ def parse_page():
             list_items.append(item)
             print("count")
         print("end")
-    return save(list_items)
+    return save(list_items)    # send datas to func save
 
 
 @shared_task(serializer='json')
