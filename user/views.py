@@ -1,25 +1,10 @@
 from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template.loader import render_to_string
 from django.http import HttpResponse
 from django.contrib.auth import logout
 from .forms import UserRegistrationForm
 from django.contrib.auth.models import User
 from .tasks import send_confirmation_email
-
-
-def create_message(user) -> str:
-    message = render_to_string(
-        "registration/email_confirm.html",
-        {
-            "domain": "127.0.0.1:8000",
-            "user": user,
-            "uid": user.id,
-            "token": default_token_generator.make_token(user)
-        }
-    )
-
-    return message
 
 
 def register(request):
